@@ -1,4 +1,18 @@
 # 1-1-2-1. checkpoint 1) The total potential energy of Ar3 is the sum of the Lennard-Jones interactions between all three pairs of atoms
+
+import numpy as np
+
+# Define the Lennard-Jones potential function
+def lennard_jones(r, epsilon=0.01, sigma=3.4):
+    # Calculate the Lennard-Jones potential using the formula
+    potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
+    return potential
+
+# Define the function to optimize (minimize)
+def lennard_jones_minimize(r, epsilon=0.01, sigma=3.4):
+    # Since minimize works with scalar functions, we return only the potential energy
+    return lennard_jones(r[0], epsilon, sigma)
+
 def total_potential_energy(r12, r13, r23, epsilon=0.01, sigma=3.4):
     # Calculate the Lennard-Jones potential for each pair of distances
     V12 = lennard_jones(r12, epsilon, sigma)
@@ -146,3 +160,41 @@ print(f"Angle at atom 1 (∠213): {angle_213:.2f} degrees")
 is_equilateral = (np.isclose(r12, r13, atol=0.01) and np.isclose(r13, r23, atol=0.01))
 geometry_comment = "The atoms form an equilateral triangle." if is_equilateral else "The atoms do not form an equilateral triangle."
 print(f"\nGeometric arrangement: {geometry_comment}")
+
+import os
+
+# Define the local path to the directory where the file will be saved
+directory_path = os.path.join("C:/Users/khh38/Desktop/PhD/Class/Class [2024 Fall]/Computational-chemistry/comp-prob-solv", "homework-2-1")
+
+# Define a function to write the XYZ file with the optimized geometry
+def write_xyz_file(file_path, atom1, atom2, atom3):
+    """
+    Write the atom coordinates to an .xyz file.
+    
+    :file_path: Full path to the .xyz file
+    :atom1, atom2, atom3: Coordinates of the three Argon atoms
+    """
+    with open(file_path, 'w') as f:
+        f.write(f"3\n")  # Number of atoms
+        f.write(f"Argon trimer geometry\n")  # Comment line
+        f.write(f"Ar {atom1[0]:.4f} {atom1[1]:.4f} 0.0000\n")  # Atom 1 with z=0 for 2D
+        f.write(f"Ar {atom2[0]:.4f} {atom2[1]:.4f} 0.0000\n")  # Atom 2 with z=0 for 2D
+        f.write(f"Ar {atom3[0]:.4f} {atom3[1]:.4f} 0.0000\n")  # Atom 3 with z=0 for 2D
+
+# Coordinates of the three Argon atoms after optimization (replace with your optimized values)
+def get_atom_coordinates(optimized_r12, optimized_x3, optimized_y3):
+    atom1 = [0, 0]  # Atom 1 is at the origin
+    atom2 = [optimized_r12, 0]  # Atom 2 is on the x-axis at (r12, 0)
+    atom3 = [optimized_x3, optimized_y3]  # Atom 3 at (x3, y3)
+    return atom1, atom2, atom3
+
+# Get the coordinates for the three Argon atoms
+atom1, atom2, atom3 = get_atom_coordinates(optimized_r12, optimized_x3, optimized_y3)
+
+# Define the path to the .xyz file inside the homework-2-1 directory
+xyz_file_path = os.path.join(directory_path, "argon_trimer_geometry.xyz")
+
+# Write the XYZ file
+write_xyz_file(xyz_file_path, atom1, atom2, atom3)
+
+print(f"XYZ file written to {xyz_file_path}")
