@@ -13,6 +13,7 @@ def lennard_jones_minimize(r, epsilon=0.01, sigma=3.4):
     # Since minimize works with scalar functions, we return only the potential energy
     return lennard_jones(r[0], epsilon, sigma)
 
+# 1-1-2-1. checkpoint 1) The total potential energy of Ar3 is the sum of the Lennard-Jones interactions between all three pairs of atoms
 def total_potential_energy(r12, r13, r23, epsilon=0.01, sigma=3.4):
     # Calculate the Lennard-Jones potential for each pair of distances
     V12 = lennard_jones(r12, epsilon, sigma)
@@ -20,18 +21,8 @@ def total_potential_energy(r12, r13, r23, epsilon=0.01, sigma=3.4):
     V23 = lennard_jones(r23, epsilon, sigma)
     
     # Total potential energy is the sum of the potentials for each pair
-    V_total = V12 + V13 + V23
-    return V_total
-
-# Example test with arbitrary distances between atoms (r12, r13, r23)
-r12_example = 4.0  # Å
-r13_example = 4.0  # Å
-r23_example = 4.0  # Å
-
-# Calculate the total potential energy for the Argon trimer
-V_total_example = total_potential_energy(r12_example, r13_example, r23_example)
-
-print(V_total_example)
+    
+    return V12 + V13 + V23
 
 # 1-1-2-2. checkpoint 1) Use scipy.optimize.minimize to find the optimal geometry of Ar3. Represent the positions of the three Ar atoms in two dimensions:
 from scipy.optimize import minimize
@@ -40,13 +31,6 @@ from scipy.optimize import minimize
 def lennard_jones(r, epsilon=0.01, sigma=3.4):
     potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
     return potential
-
-# Redefine the total potential energy for the Argon trimer based on pairwise distances
-def total_potential_energy(r12, r13, r23, epsilon=0.01, sigma=3.4):
-    V12 = lennard_jones(r12, epsilon, sigma)
-    V13 = lennard_jones(r13, epsilon, sigma)
-    V23 = lennard_jones(r23, epsilon, sigma)
-    return V12 + V13 + V23
 
 # Using compute_bond_length function from Homework 1
 def compute_bond_length(coord1, coord2):
@@ -93,6 +77,10 @@ optimized_r12, optimized_x3, optimized_y3 = result_trimer.x
 optimized_total_energy = total_potential_energy_trimer([optimized_r12, optimized_x3, optimized_y3])
 
 print(optimized_r12, optimized_x3, optimized_y3, optimized_total_energy)
+print(f"Optimized vector for Ar3:")
+print(f"(0, 0, 0): (0, 0, 0)")
+print(f"(r12, 0, 0): ({optimized_r12:.2f}, 0, 0)")
+print(f"(x3, y3, 0): ({optimized_x3:.2f}, {optimized_y3:.2f}, 0)")
 
 # defining compute_bond_angle from Homework 1
 def compute_bond_angle(coord1, coord2, coord3):

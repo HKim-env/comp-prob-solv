@@ -33,29 +33,6 @@ optimized_potential = lennard_jones(optimized_distance)
 
 print(optimized_distance, optimized_potential)
 
-# Define the Lennard-Jones potential function
-def lennard_jones(r, epsilon=0.01, sigma=3.4):
-    # Calculate the Lennard-Jones potential using the formula
-    potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
-    return potential
-
-# Define the function to optimize (minimize)
-def lennard_jones_minimize(r, epsilon=0.01, sigma=3.4):
-    # Since minimize works with scalar functions, we return only the potential energy
-    return lennard_jones(r[0], epsilon, sigma)
-
-# Initial guess for r
-initial_guess = [4.0]  # Starting with r = 4 Å
-
-# Perform the optimization
-result = minimize(lennard_jones_minimize, initial_guess, bounds=[(0.1, None)])  # Setting lower bound for r
-
-# Optimized distance
-optimized_distance = result.x[0]
-optimized_potential = lennard_jones(optimized_distance)
-
-print(optimized_distance, optimized_potential)
-
 import matplotlib.pyplot as plt
 
 # 1-1-1-3. Checking point 1) Plot the Lennard-Jones potential V (r) as a function of the distance r between 3  ̊A ≤ r ≤ 6  ̊A
@@ -78,4 +55,3 @@ plt.legend()
 # Show the plot
 plt.grid(True)
 plt.show()
-
