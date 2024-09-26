@@ -14,7 +14,7 @@ def square_well_potential(r, sigma, epsilon, lambda_param):
     else:
         return 0  # No interaction beyond lambda*sigma
 
-# 2-1-1. checkpoint 1) Define the Lennard-Jones potential function (reuse the function)
+# 2-1-1. checkpoint 1) Define the Lennard-Jones potential function
 def lennard_jones_potential(r, epsilon, sigma):
     return 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
 
@@ -87,16 +87,11 @@ def square_well_potential(r, sigma, epsilon, lambda_param):
 
 # Define a range of temperatures from 100 K to 800 K
 temperatures = np.linspace(100, 800, 8)  # Temperatures from 100 K to 800 K in steps of 100 K
-epsilon = 0.01  # Example well depth in eV
-lambda_param = 1.5  # Example range for square well
 
 # Create arrays to store results
 B2V_hard_sphere_values = []
 B2V_square_well_values = []
 B2V_lennard_jones_values = []
-
-# Convert epsilon to Joules since k_B is in J/K
-epsilon_joules = epsilon * 1.60218e-19  # Convert eV to J
 
 # Define the integrand for B2V (e^-u(r)/kBT - 1) * r^2
 def integrand(potential_func, r_values, T, *args):
