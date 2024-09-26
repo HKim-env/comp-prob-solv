@@ -165,9 +165,9 @@ def write_xyz_file(file_path, atom1, atom2, atom3):
     with open(file_path, 'w') as f:
         f.write(f"3\n")  # Number of atoms
         f.write(f"Argon trimer geometry\n")  # Comment line
-        f.write(f"Ar {atom1[0]:.4f} {atom1[1]:.4f} 0.0000\n")  # Atom 1 with z=0 for 2D
-        f.write(f"Ar {atom2[0]:.4f} {atom2[1]:.4f} 0.0000\n")  # Atom 2 with z=0 for 2D
-        f.write(f"Ar {atom3[0]:.4f} {atom3[1]:.4f} 0.0000\n")  # Atom 3 with z=0 for 2D
+        f.write(f"Ar {atom1[0]:.6f} {atom1[1]:.6f} 0.000000\n")  # Atom 1 with z=0 for 2D
+        f.write(f"Ar {atom2[0]:.6f} {atom2[1]:.6f} 0.000000\n")  # Atom 2 with z=0 for 2D
+        f.write(f"Ar {atom3[0]:.6f} {atom3[1]:.6f} 0.000000\n")  # Atom 3 with z=0 for 2D
 
 # Coordinates of the three Argon atoms after optimization (replace with your optimized values)
 def get_atom_coordinates(optimized_r12, optimized_x3, optimized_y3):
