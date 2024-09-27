@@ -20,11 +20,26 @@ print(f"x range: [{x[0]}, {x[-1]}] with step size dx = {dx:.5f} a.u.")
 
 # 3-1-2. checkpoint 1)Write a Python function to construct the potential matrix for the harmonic potential
 def harmonic_potential(x, omega=1): # define omega as 1 a.u.
+    """
+    Compute the square well potential with given equation
+    
+    parameters
+    :x : distance
+    :omega : given omega value in the system
+    """
     return 0.5 * m * omega**2 * x**2
 
 # 3-1-1. checkpoint 2)Define the anharmonic (Morse) potential function, define D ans 10 a.u.
 # 3-1-2. checkpoint 1)Write a Python function to construct the potential matrix for the anharmonic potential
 def morse_potential(x, D=10, beta=0.22361, x0=0): 
+    """
+    Compute the square well potential with given equation
+    
+    parameters
+    :x : distance
+    :D : depth of the potential well
+    :omega : given omega value in the system
+    """
     return D * (1 - np.exp(-beta * (x - x0)))**2
 
 # Function to construct the potential matrix using np.eye
@@ -142,6 +157,17 @@ for i, energy in enumerate(first_ten_energies_morse, start=1):
     import matplotlib.pyplot as plt
 
 def plot_wavefunctions(x, eigenvalues, eigenfunctions, potential_func, potential_name, num_wavefunctions=10):
+    """
+    Adjusted plotting function to change the y-axis limits for better clarity.
+    
+    parameters:
+    : x: Grid points (position).
+    : eigenvalues: The eigenvalues (energy levels).
+    : eigenfunctions: The eigenfunctions (wavefunctions).
+    : potential_func: The potential function to overlay on the plot.
+    : potential_name: A string to label the plot with the potential's name.
+    : num_wavefunctions: Number of wavefunctions to plot (default is 10).
+    """
     potential_values = potential_func(x)
     plt.figure(figsize=(10, 8))
     plt.plot(x, potential_values, label=f'{potential_name} Potential', color='black', lw=2)
@@ -161,6 +187,8 @@ plot_wavefunctions(x, first_ten_energies_harmonic, eigenfunctions_harmonic, harm
 # Plot for Morse potential
 plot_wavefunctions(x, first_ten_energies_morse, eigenfunctions_morse, morse_potential, 'Morse')
 
+
+# to figure out the oscillation clearly, I adjusted the y axis
 def plot_wavefunctions_adjusted(x, eigenvalues, eigenfunctions, potential_func, potential_name, num_wavefunctions=10, y_limit=None):
     """
     Adjusted plotting function to change the y-axis limits for better clarity.
@@ -192,7 +220,7 @@ def plot_wavefunctions_adjusted(x, eigenvalues, eigenfunctions, potential_func, 
         plt.plot(x, wavefunction + eigenvalues[i], label=f'Ψ_{i+1} (E = {eigenvalues[i]:.2f} a.u.)')
     
     # 3-1-5. checkpoint 2) Add titles and labels
-    plt.title(f'First {num_wavefunctions} Wavefunctions for the {potential_name} Potential', fontsize=14)
+    plt.title(f'First {num_wavefunctions} Wavefunctions for the {potential_name} Potential - y limit adjusted', fontsize=14)
     plt.xlabel('Position (x) [a.u.]', fontsize=12)
     plt.ylabel('Energy [a.u.]', fontsize=12)
     plt.grid(True)
