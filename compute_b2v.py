@@ -1,5 +1,12 @@
 # 2-1-1. checkpoint 1) Define the Hard-Sphere potential function
 def hard_sphere_potential(r, sigma):
+    """
+    Compute the hard sphere potential with given equation
+    
+    parameters
+    :r : distance
+    :sigma : the value of sigma
+    """
     if r < sigma:
         return float('inf')  # Infinite repulsion inside the hard sphere
     else:
@@ -7,6 +14,15 @@ def hard_sphere_potential(r, sigma):
 
 # 2-1-1. checkpoint 1) Define the Square-Well potential function
 def square_well_potential(r, sigma, epsilon, lambda_param):
+    """
+    Compute the square well potential with given equation
+    
+    parameters
+    :r : distance
+    :sigma : the value of sigma
+    :epsilon: the value of epsilon
+    : lambda_param : lambda as a parameter
+    """
     if r < sigma:
         return float('inf')  # Infinite repulsion inside the particle diameter
     elif sigma <= r < lambda_param * sigma:
@@ -15,8 +31,8 @@ def square_well_potential(r, sigma, epsilon, lambda_param):
         return 0  # No interaction beyond lambda*sigma
 
 # 2-1-1. checkpoint 1) Define the Lennard-Jones potential function
-def lennard_jones_potential(r, epsilon, sigma):
-    return 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
+
+from python_code import lennard_jones
 
 # Test the potential functions with example parameters
 r_test = 1.0  # Example distance
@@ -27,7 +43,7 @@ lambda_test = 1.5  # Example range for square well
 # Test each potential
 hs_potential = hard_sphere_potential(r_test, sigma_test)
 sw_potential = square_well_potential(r_test, sigma_test, epsilon_test, lambda_test)
-lj_potential = lennard_jones_potential(r_test, epsilon_test, sigma_test)
+lj_potential = lennard_jones(r_test, epsilon_test, sigma_test)
 
 print(f"Hard-Sphere Potential: {hs_potential}")
 print(f"Square-Well Potential: {sw_potential}")
@@ -71,6 +87,11 @@ r_values = np.linspace(1e-3, 5 * sigma_lennard_jones, 1000)  # 2-1-2. checkpoint
 # 2-1-2. checkpoint 4)Update the term ∞ as 1000
 
 def hard_sphere_potential(r, sigma):
+    """
+    redefine the hard_sphere_potential to change the infinite value
+
+    infinite: assume as 1000
+    """
     if r < sigma:
         return 1000  # Approximate infinite repulsion with 1000
     else:
@@ -78,6 +99,11 @@ def hard_sphere_potential(r, sigma):
 
 # 2-1-1. checkpoint 1) Define the Square-Well potential function
 def square_well_potential(r, sigma, epsilon, lambda_param):
+    """
+    redefine the hard_sphere_potential to change the infinite value
+
+    infinite: assume as 1000
+    """
     if r < sigma:
         return 1000  # Approximate infinite repulsion with 1000
     elif sigma <= r < lambda_param * sigma:
@@ -95,11 +121,27 @@ B2V_lennard_jones_values = []
 
 # Define the integrand for B2V (e^-u(r)/kBT - 1) * r^2
 def integrand(potential_func, r_values, T, *args):
+    """
+    define integrand function to calculate B2V
+
+    potential_func: defined potential functions for B2V
+    r_values : distance
+    T: tempearture
+    *args: pass a variable number of arguments to a function
+    """
     potential_values = np.array([potential_func(r, *args) for r in r_values])
     return (np.exp(-potential_values / (k * T)) - 1) * r_values**2
 
 # Function to compute B2V for a given temperature and potential
 def compute_B2V_for_potential(potential_func, r_values, T, *args):
+    """
+    define integrand function to calculate B2V
+
+    potential_func: defined potential functions for B2V
+    r_values : distance
+    T: tempearture
+    *args: pass a variable number of arguments to a function
+    """
     integrand_values = integrand(potential_func, r_values, T, *args)
     return -2 * np.pi * N_A * trapezoid(integrand_values, r_values)
 
@@ -114,7 +156,7 @@ for T in temperatures:
     B2V_square_well_values.append(sw_B2V)
     
     # Lennard-Jones potential
-    lj_B2V = compute_B2V_for_potential(lennard_jones_potential, r_values, T, epsilon_lennard_jones_joules, sigma_lennard_jones)
+    lj_B2V = compute_B2V_for_potential(lennard_jones, r_values, T, epsilon_lennard_jones_joules, sigma_lennard_jones)
     B2V_lennard_jones_values.append(lj_B2V)
 
 formatted_B2V_hard_sphere = [f"{val:.3e}" for val in B2V_hard_sphere_values]
