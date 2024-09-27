@@ -2,6 +2,14 @@ import numpy as np
 
 # 1-1-1-1 Checking point 1) Write a Python function lennard_jones(r, epsilon=0.01, sigma=3.4) that takes the distance r between two Ar atoms and returns the potential energy V (r) using the Lennard-Jones formula.
 def lennard_jones(r, epsilon=0.01, sigma=3.4):
+    """
+    Compute the lennard_jones function.
+    
+    parameters
+    :r : interatomic distance.
+    :epsilon : the epsilon number
+    : sigma: the sigma number in the system
+    """
     # Calculate the Lennard-Jones potential using the formula
     potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
     return potential
@@ -18,6 +26,14 @@ from scipy.optimize import minimize
 
 # Define the function to optimize (minimize)
 def lennard_jones_minimize(r, epsilon=0.01, sigma=3.4):
+    """
+    Compute the lennard_jones_minimize function.
+    
+    parameters
+    :r : interatomic distance.
+    :epsilon : the epsilon number
+    : sigma: the sigma number in the system
+    """
     # Since minimize works with scalar functions, we return only the potential energy
     return lennard_jones(r[0], epsilon, sigma)
 

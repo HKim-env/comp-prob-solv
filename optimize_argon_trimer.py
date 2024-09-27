@@ -1,20 +1,18 @@
-# 1-1-2-1. checkpoint 1) The total potential energy of Ar3 is the sum of the Lennard-Jones interactions between all three pairs of atoms
-
-import numpy as np
-
-# Define the Lennard-Jones potential function
-def lennard_jones(r, epsilon=0.01, sigma=3.4):
-    # Calculate the Lennard-Jones potential using the formula
-    potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
-    return potential
-
-# Define the function to optimize (minimize)
-def lennard_jones_minimize(r, epsilon=0.01, sigma=3.4):
-    # Since minimize works with scalar functions, we return only the potential energy
-    return lennard_jones(r[0], epsilon, sigma)
+import numpy as np # define numpy as np
 
 # 1-1-2-1. checkpoint 1) The total potential energy of Ar3 is the sum of the Lennard-Jones interactions between all three pairs of atoms
+
 def total_potential_energy(r12, r13, r23, epsilon=0.01, sigma=3.4):
+    """
+    Compute total_potential_energy.
+    
+    parameters
+    :r12 : distance between atom 1 and atom 2
+    :r13 : distance between atom 1 and atom 3
+    :r23 : distance between atom 2 and atom 3
+    : epsilon : the epsilon value
+    : sigma : the sigma value
+    """
     # Calculate the Lennard-Jones potential for each pair of distances
     V12 = lennard_jones(r12, epsilon, sigma)
     V13 = lennard_jones(r13, epsilon, sigma)
@@ -32,24 +30,18 @@ def lennard_jones(r, epsilon=0.01, sigma=3.4):
     potential = 4 * epsilon * ((sigma / r)**12 - (sigma / r)**6)
     return potential
 
-# Using compute_bond_length function from Homework 1
-def compute_bond_length(coord1, coord2):
-    """
-    Compute the bond length between two atoms using the Cartesian coordinates.
-    
-    parameters
-    :coord1: List of [x, y, z] coordinates of the first atom.
-    :coord2: List of [x, y, z] coordinates of the second atom.
-    :return: The bond length between the two atoms.
-    """
-    # Calculate the bond length using the distance formula
-    bond_length = np.sqrt((coord2[0] - coord1[0])**2 + 
-                          (coord2[1] - coord1[1])**2)
-    
-    return bond_length
+from python_code import compute_bond_length
 
 # Define the total potential energy in terms of r12, x3, and y3
 def total_potential_energy_trimer(variables, epsilon=0.01, sigma=3.4):
+    """
+    Compute the total potential energy for Argon trimer.
+    
+    parameters
+    :variables : variable of defined function.
+    :epsilon : the epsilon number
+    : sigma: the sigma number in the system
+    """
     r12 = variables[0]  # distance between atom 1 and atom 2
     x3 = variables[1]   # x-coordinate of atom 3
     y3 = variables[2]   # y-coordinate of atom 3
@@ -82,39 +74,20 @@ print(f"(0, 0, 0): (0, 0, 0)")
 print(f"(r12, 0, 0): ({optimized_r12:.2f}, 0, 0)")
 print(f"(x3, y3, 0): ({optimized_x3:.2f}, {optimized_y3:.2f}, 0)")
 
-# defining compute_bond_angle from Homework 1
-def compute_bond_angle(coord1, coord2, coord3):
-    """
-    Compute the bond angle between three atoms using their Cartesian coordinates.
-    
-    Parameters
-    :coord1: List of [x, y] coordinates of the first atom.
-    :coord2: List of [x, y] coordinates of the second atom.
-    :coord3: List of [x, y] coordinates of the third atom.
-    :return: The bond angle in degrees.
-    """
-    # Create vectors AB and BC
-    AB = np.array(coord1) - np.array(coord2)
-    BC = np.array(coord3) - np.array(coord2)
-    
-    # Calculate the dot product and magnitudes of the vectors
-    dot_product = np.dot(AB, BC)
-    magnitude_AB = np.linalg.norm(AB)
-    magnitude_BC = np.linalg.norm(BC)
-    
-    # Compute the cosine of the angle using the dot product formula
-    cos_theta = dot_product / (magnitude_AB * magnitude_BC)
-    
-    # Calculate the angle in radians and then convert to degrees
-    angle_rad = np.arccos(np.clip(cos_theta, -1.0, 1.0))  # Clip to handle numerical errors
-    angle_deg = np.degrees(angle_rad)
-    
-    return angle_deg
+from python_code import compute_bond_angle
 
-import math
+import math # impor math to make an access to the Python math functions provided by the C standard
 
 # Define the atom coordinates based on the optimized values
 def get_atom_coordinates(optimized_r12, optimized_x3, optimized_y3):
+    """
+    Compute the coordinate of atoms.
+    
+    parameters
+    :optimized_r12 : optimized length between atom 1 and 2.
+    :optimized_x3 : optimized x3 coordinate
+    :optimized_y3 : optimized y3 coordinate
+    """
     atom1 = [0, 0]  # Atom 1 is at the origin
     atom2 = [optimized_r12, 0]  # Atom 2 is on the x-axis at (r12, 0)
     atom3 = [optimized_x3, optimized_y3]  # Atom 3 at (x3, y3)
@@ -165,9 +138,9 @@ def write_xyz_file(file_path, atom1, atom2, atom3):
     with open(file_path, 'w') as f:
         f.write(f"3\n")  # Number of atoms
         f.write(f"Argon trimer geometry\n")  # Comment line
-        f.write(f"Ar {atom1[0]:.6f} {atom1[1]:.6f} 0.000000\n")  # Atom 1 with z=0 for 2D
-        f.write(f"Ar {atom2[0]:.6f} {atom2[1]:.6f} 0.000000\n")  # Atom 2 with z=0 for 2D
-        f.write(f"Ar {atom3[0]:.6f} {atom3[1]:.6f} 0.000000\n")  # Atom 3 with z=0 for 2D
+        f.write(f"Ar {atom1[0]:.4f} {atom1[1]:.4f} 0.0000\n")  # Atom 1 with z=0 for 2D
+        f.write(f"Ar {atom2[0]:.4f} {atom2[1]:.4f} 0.0000\n")  # Atom 2 with z=0 for 2D
+        f.write(f"Ar {atom3[0]:.4f} {atom3[1]:.4f} 0.0000\n")  # Atom 3 with z=0 for 2D
 
 # Coordinates of the three Argon atoms after optimization (replace with your optimized values)
 def get_atom_coordinates(optimized_r12, optimized_x3, optimized_y3):
