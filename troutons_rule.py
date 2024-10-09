@@ -150,7 +150,7 @@ plt.legend()
 plt.grid(True)
 
 # Display the equation with 95% confidence intervals on the plot in kJ/mol
-eq_str = f'Hv = ({slope:.2f} ± {slope_conf_interval:.2f}) * TB + ({intercept_kJ_mol:.2f} ± {intercept_conf_interval_kJ_mol:.2f})'
+eq_str = f'Hv = ({slope:.2f} ± {slope_conf_interval:.2f} J/mol-K) * TB + ({intercept_kJ_mol:.2f} ± {intercept_conf_interval_kJ_mol:.2f} kJ/mol)'
 plt.text(min(TB), max(Hv_j_mol) * 0.9, eq_str, fontsize=12)
 
 # Show the plot
@@ -164,7 +164,7 @@ print(f"Intercept: {intercept_kJ_mol:.2f} kJ/mol ± {intercept_conf_interval_kJ_
 
 # Compare to Trouton's Rule 
 # : The value is ~ 88 J/mol-K for many substances. In this problem, I got the value of 103.85 J/mol-K. They are not the same, but quite close enough. This is because of the out-ranged data from 'Metals' class. If I erase the outranged data, the value will be more close to 88 J/mol-K.
-# To figure out it, I run another set with modified data set (except Ag and Sn)
+# To figure out it, I run another set with modified data set (except Ag and Sn because it seems outrange of the line)
 
 # Load the modified data set (except Ag and Sn)
 data = pd.read_csv('trouton2.csv')
@@ -309,7 +309,7 @@ plt.legend()
 plt.grid(True)
 
 # Display the equation with 95% confidence intervals on the plot in kJ/mol
-eq_str = f'Hv = ({slope:.2f} ± {slope_conf_interval:.2f}) * TB + ({intercept_kJ_mol:.2f} ± {intercept_conf_interval_kJ_mol:.2f})'
+eq_str = f'Hv = ({slope:.2f} ± {slope_conf_interval:.2f} J/mol-K) * TB + ({intercept_kJ_mol:.2f} ± {intercept_conf_interval_kJ_mol:.2f} kJ/mol)'
 plt.text(min(TB), max(Hv_j_mol) * 0.9, eq_str, fontsize=12)
 
 # Show the plot

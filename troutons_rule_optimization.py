@@ -80,8 +80,10 @@ else:
 
 # 2-1 Checking point 4)Interpretation: Discuss the implications of using an optimization-based approach versus a linear regression approach for this problem
 
+# 2-1 Checking point 4)Interpretation: Discuss the implications of using an optimization-based approach versus a linear regression approach for this problem
+
 # Implication:
 # 1. In this problem, the estimated slope was the same in both OLS regression and optimization methods. Therefore, there was no significant advantage for this particular case. This is because the given data has a linear relationship, so there was no difference between the linear regression and the optimization-based approach.
-
 # 2. However, when the data does not follow a linear relationship and is more complex, the optimization-based approach can be beneficial. This is because we can derive the slope and intercept with arbitrary initial values (for example, I applied 0, 0 in this problem).
+# 3. Also, optimization-based approach needs less definition, so it would be simple and better to understand the code.
 
