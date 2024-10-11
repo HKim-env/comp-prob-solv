@@ -4,6 +4,8 @@ from python_code import internal_energy
 from python_code import heat_capacity
 from python_code import T_values
 
+# # 3-1-3 Checking point 1) Plot CV as a function of temperature, and determine the temperature at which CV reaches its maximum
+
 # Plotting the heat capacity and adding the dissociation temperature
 def plot_heat_capacity_with_dissociation(C_V_values, dissociation_temp, max_CV):
     plt.plot(T_values, C_V_values, label='Heat Capacity')
@@ -26,6 +28,8 @@ def find_dissociation_temperature(C_V_values):
     dissociation_temp = T_values[max_index]
     max_CV = C_V_values[max_index] 
     
+    # # 3-1-3 Checking point 2) This maximum corresponds to the atomization temperature of the LJ dimer
+
     # Print the maximum heat capacity and corresponding temperature only once
     print(f"Maximum Heat Capacity: {max_CV:.2e} J/K")
     print(f"Dissociation Temperature (Maximum C_V): {dissociation_temp:.2f} K")

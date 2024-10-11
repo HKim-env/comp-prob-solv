@@ -8,6 +8,7 @@ import os
 
 # I re-utilized previous codes in python_code.py. I also uploaded the new version of python_code.
 
+# # 3-1-2 Checking point 1) Write Python functions to compute U and CV from the partition function
 # Function to calculate U using np.gradient
 def internal_energy(T):
     beta = 1 / (k * T)

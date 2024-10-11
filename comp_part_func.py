@@ -30,6 +30,8 @@ def thermal_wavelength(T):
 def lj_potential(r):
     return 4 * epsilon * ((sigma / r) ** 12 - (sigma / r) ** 6)
 
+# 3-1-1 Checking point 1) Write a Python function that numerically computes the classical partition function of two LJ particles in a cubic box using the trapezoidal rule for spatial integration
+
 # Partition function for two LJ particles in a cubic box
 def partition_function(T):
     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
@@ -39,7 +41,7 @@ def partition_function(T):
     # I applied the 4 * pi to the pre_factor
     pre_factor = 4 * np.pi / ((h ** 6) * (λ ** 6))  # Pre-factor from Eq. (10) includes h and 4*pi
 
-
+    # # 3-1-1 Checking point 2) Assume the cubic box has a fixed volume, and the integration should be performed over the relative distances between the particles
     # Perform integration over relative distance r, using spherical coordinates
     # Set the maximum relative distance based on the fixed volume
     r_min = 0.001 * sigma  # Avoid zero to prevent singularity
