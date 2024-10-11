@@ -1,7 +1,23 @@
 import numpy as np
 from scipy.constants import k  # Boltzmann constant
+import matplotlib.pyplot as plt
 import os
 import csv
+
+def numerical_derivative(func, T, delta=1e-5):
+    """
+    Computes the numerical derivative of a function `func` at temperature `T`
+    using the central difference method.
+
+    Parameters:
+    - func: Function to compute the derivative of
+    - T: Temperature at which the derivative is evaluated
+    - delta: Small change in T used for finite differences
+
+    Returns:
+    - The numerical derivative at the given temperature T
+    """
+    return (func(T + delta) - func(T - delta)) / (2 * delta)
 
 # 2-1-1 Checking point 1) Write a Python function to compute the partition function for an isolated Ce3+ ion with 14-fold degeneracy, where all states have zero energy.
 # Isolated Ce3+ with 14-fold degeneracy, zero energy for all states
@@ -10,6 +26,7 @@ def partition_function_isolated(T):
     Z_iso = g_iso  # Partition function is constant
     return Z_iso
 
+# 2-1-1 Checking point 2) Compute the thermodynamic properties 
 # Thermodynamic properties based on the given expressions
 def thermodynamic_properties_isolated(T):
     Z = partition_function_isolated(T)
@@ -28,8 +45,8 @@ def thermodynamic_properties_isolated(T):
     # Free Energy: F = - k_B T ln(Z)
     F = - k * T * lnZ
     
-    # Entropy: S = - dF / dT
-    S = k * np.log(Z)  # For this simple case, S = k_B * ln(Z)
+    # Use the numerical derivative of free energy for entropy
+    S = - numerical_derivative(lambda T: -k * T * np.log(partition_function_isolated(T)), T)
     
     return U, F, S, Z
 
@@ -42,6 +59,7 @@ def partition_function_soc(T):
     Z_soc = np.sum(g_soc * np.exp(-beta * E_soc))  # Partition function
     return Z_soc, g_soc, E_soc
 
+# 2-1-2 Checking point 2) Use the partition function to compute the thermodynamic properties 
 def thermodynamic_properties_soc(T):
     Z, g_soc, E_soc = partition_function_soc(T)  # Ensure g_soc and E_soc are retrieved
     
@@ -53,8 +71,8 @@ def thermodynamic_properties_soc(T):
     # Free Energy: F = - k_B T ln(Z)
     F = - k * T * np.log(Z)
     
-    # Entropy: S = U/T - F/T
-    S = k * np.log(Z)  # This is the analytic expression for entropy in this case
+    # Use the numerical derivative of free energy for entropy
+    S = -numerical_derivative(lambda T: -k * T * np.log(partition_function_soc(T)[0]), T)
     
     return U, F, S, Z
 
@@ -67,6 +85,7 @@ def partition_function_soc_cfs(T):
     Z_soc_cfs = np.sum(g_soc_cfs * np.exp(-beta * E_soc_cfs))  # Partition function
     return Z_soc_cfs, g_soc_cfs, E_soc_cfs
 
+# 2-1-3 Checking point 3) Use the partition function to compute the thermodynamic properties 
 def thermodynamic_properties_soc_cfs(T):
     Z, g_soc_cfs, E_soc_cfs = partition_function_soc_cfs(T)  # Ensure g_soc_cfs and E_soc_cfs are retrieved
     
@@ -78,8 +97,8 @@ def thermodynamic_properties_soc_cfs(T):
     # Free Energy: F = - k_B T ln(Z)
     F = - k * T * np.log(Z)
     
-    # Entropy: S = U/T - F/T
-    S = k * np.log(Z)  # This is the analytic expression for entropy in this case
+    # Use the numerical derivative of free energy for entropy
+    S = -numerical_derivative(lambda T: -k * T * np.log(partition_function_soc_cfs(T)[0]), T)
     
     return U, F, S, Z
 
@@ -100,6 +119,89 @@ for T in T_values:
     data_isolated.append([T, U_iso, F_iso, S_iso])
     data_soc.append([T, U_soc, F_soc, S_soc])
     data_soc_cfs.append([T, U_soc_cfs, F_soc_cfs, S_soc_cfs])
+
+# Define the temperature range
+T_values = np.linspace(300, 2000, 100)
+
+# Arrays to store the thermodynamic properties and partition functions
+U_iso_values, F_iso_values, S_iso_values, Z_iso_values = [], [], [], []
+U_soc_values, F_soc_values, S_soc_values, Z_soc_values = [], [], [], []
+U_soc_cfs_values, F_soc_cfs_values, S_soc_cfs_values, Z_soc_cfs_values = [], [], [], []
+
+# 2-1-4 Checking point 1) Compute and compare the partition functions and the thermodynamic properties 
+# Compute thermodynamic properties and partition functions for each temperature
+for T in T_values:
+    U_iso, F_iso, S_iso, Z_iso = thermodynamic_properties_isolated(T)
+    U_soc, F_soc, S_soc, Z_soc = thermodynamic_properties_soc(T)
+    U_soc_cfs, F_soc_cfs, S_soc_cfs, Z_soc_cfs = thermodynamic_properties_soc_cfs(T)
+    
+    # Store the results for isolated Ce3+
+    U_iso_values.append(U_iso)
+    F_iso_values.append(F_iso)
+    S_iso_values.append(S_iso)
+    Z_iso_values.append(Z_iso)
+    
+    # Store the results for Ce3+ with SOC
+    U_soc_values.append(U_soc)
+    F_soc_values.append(F_soc)
+    S_soc_values.append(S_soc)
+    Z_soc_values.append(Z_soc)
+    
+    # Store the results for Ce3+ with SOC & CFS
+    U_soc_cfs_values.append(U_soc_cfs)
+    F_soc_cfs_values.append(F_soc_cfs)
+    S_soc_cfs_values.append(S_soc_cfs)
+    Z_soc_cfs_values.append(Z_soc_cfs)
+
+# 2-1-4 Checking point 2) Provide plots of the thermodynamic properties as a function of temperature (from 300 K to 2000 K)
+# Plot Partition Functions for the three cases
+plt.figure(figsize=(10, 6))
+plt.plot(T_values, Z_iso_values, label='Isolated Ce3+')
+plt.plot(T_values, Z_soc_values, label='Ce3+ with SOC')
+plt.plot(T_values, Z_soc_cfs_values, label='Ce3+ with SOC & CFS')
+plt.xlabel('Temperature (K)')
+plt.ylabel('Partition Function Z')
+plt.title('Partition Function vs Temperature')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot Internal Energy for the three cases
+plt.figure(figsize=(10, 6))
+plt.plot(T_values, U_iso_values, label='Isolated Ce3+')
+plt.plot(T_values, U_soc_values, label='Ce3+ with SOC')
+plt.plot(T_values, U_soc_cfs_values, label='Ce3+ with SOC & CFS')
+plt.xlabel('Temperature (K)')
+plt.ylabel('Internal Energy (J)')
+plt.title('Internal Energy vs Temperature')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot Free Energy for the three cases
+plt.figure(figsize=(10, 6))
+plt.plot(T_values, F_iso_values, label='Isolated Ce3+')
+plt.plot(T_values, F_soc_values, label='Ce3+ with SOC')
+plt.plot(T_values, F_soc_cfs_values, label='Ce3+ with SOC & CFS')
+plt.xlabel('Temperature (K)')
+plt.ylabel('Free Energy (J)')
+plt.title('Free Energy vs Temperature')
+plt.legend()
+plt.grid(True)
+plt.show()
+
+# Plot Entropy for the three cases
+plt.figure(figsize=(10, 6))
+plt.plot(T_values, S_iso_values, label='Isolated Ce3+')
+plt.plot(T_values, S_soc_values, label='Ce3+ with SOC')
+plt.plot(T_values, S_soc_cfs_values, label='Ce3+ with SOC & CFS')
+plt.xlabel('Temperature (K)')
+plt.ylabel('Entropy (J/K)')
+plt.title('Entropy vs Temperature')
+plt.legend()
+plt.grid(True)
+plt.show()
+
 
 # Get the current working directory
 current_directory = os.getcwd()
