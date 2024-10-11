@@ -8,3 +8,4 @@ The work done in an isothermal process (blue curve) is consistently more negativ
 ## Adiabatic Process
 
 The work done in an adiabatic process (orange curve) is less negative compared to the isothermal process. In the adiabatic process, no heat is exchanged with the surroundings, so the system's internal energy directly influences the work done. Since there is no heat exchange, resulting in less work being done for the same volume change.
+ssss
