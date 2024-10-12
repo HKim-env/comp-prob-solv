@@ -11,6 +11,15 @@ import os
 # # 3-1-2 Checking point 1) Write Python functions to compute U and CV from the partition function
 # Function to calculate U using np.gradient
 def internal_energy(T):
+    """
+    Computes the internal energy U(T) using the partition function Z(T).
+    
+    Parameters:
+    - T (float): Temperature in Kelvin.
+
+    Returns:
+    - U (float): Internal energy at the given temperature.
+    """
     beta = 1 / (k * T)
     Z = partition_function(T)  # Assumed that this function doesn't save to a CSV
     delta_T = T * 0.01  # Small finite difference step for numerical differentiation
@@ -23,24 +32,35 @@ def internal_energy(T):
 
 # Heat capacity C_V from internal energy U
 def heat_capacity(T):
+    """
+    Calculates the heat capacity C_V(T) from the internal energy U(T).
+    
+    Parameters:
+    - T (float): Temperature in Kelvin.
+
+    Returns:
+    - C_V_values (array-like): Heat capacity values for each temperature in T_values.
+    - U_values (array-like): Internal energy values for each temperature in T_values.
+    """
     U_values = np.array([internal_energy(T) for T in T_values])
     C_V_values = np.gradient(U_values, T_values)  # Derivative of U with respect to T
     return C_V_values, U_values
 
-# Write data to CSV file
+# Write data to CSV file in the current working directory
 def write_csv(T_values, U_values, C_V_values):
+    """
+    Writes temperature, internal energy, and heat capacity data to a CSV file in the current directory.
+    
+    Parameters:
+    - T_values (array-like): Array of temperature values.
+    - U_values (array-like): Array of internal energy values.
+    - C_V_values (array-like): Array of heat capacity values.
+    """
     # Get the current working directory
     current_directory = os.getcwd()
 
-    # Specify the folder where the file will be saved, relative to the current directory
-    folder_name = "comp-prob-solv/homework-4-grad"
-    directory = os.path.join(current_directory, folder_name)
-
-    # Create the directory if it does not exist
-    os.makedirs(directory, exist_ok=True)
-
-    # Specify the CSV file path
-    csv_file_path = os.path.join(directory, "internal_energy_heat_capacity_vs_temperature.csv")
+    # Specify the CSV file path directly in the current directory
+    csv_file_path = os.path.join(current_directory, "internal_energy_heat_capacity_vs_temperature.csv")
 
     # Write the results to a CSV file
     with open(csv_file_path, mode='w', newline='') as file:
@@ -53,18 +73,6 @@ def write_csv(T_values, U_values, C_V_values):
             writer.writerow([T, U, C_V])
 
     print(f"CSV file successfully created at {csv_file_path}")
-
-# Calculate the dissociation temperature
-def find_dissociation_temperature(C_V_values):
-    max_index = np.argmax(C_V_values)
-    dissociation_temp = T_values[max_index]
-    max_CV = C_V_values[max_index] 
-    
-    # Print the maximum heat capacity and corresponding temperature only once
-    print(f"Maximum Heat Capacity: {max_CV:.2e} J/K")
-    print(f"Dissociation Temperature (Maximum C_V): {dissociation_temp:.2f} K")
-    
-    return dissociation_temp, max_CV
 
 # Main execution
 C_V_values, U_values = heat_capacity(T_values)  # Calculate U_values and C_V_values

@@ -8,6 +8,16 @@ from python_code import T_values
 
 # Plotting the heat capacity and adding the dissociation temperature
 def plot_heat_capacity_with_dissociation(C_V_values, dissociation_temp, max_CV):
+    """
+    Plots the heat capacity (C_V) as a function of temperature and highlights the dissociation temperature
+    where C_V reaches its maximum.
+    
+    Parameters:
+    - C_V_values (array-like): Array of heat capacity values as a function of temperature.
+    - dissociation_temp (float): Temperature at which C_V is maximum (dissociation temperature).
+    - max_CV (float): Maximum value of heat capacity.
+    
+    """
     plt.plot(T_values, C_V_values, label='Heat Capacity')
     
     # Mark the maximum heat capacity point (convert to lists to avoid errors in plt.scatter)
@@ -24,6 +34,16 @@ def plot_heat_capacity_with_dissociation(C_V_values, dissociation_temp, max_CV):
 
 # Calculate the dissociation temperature
 def find_dissociation_temperature(C_V_values):
+    """
+    Finds the dissociation temperature where the heat capacity (C_V) reaches its maximum.
+    
+    Parameters:
+    - C_V_values (array-like): Array of heat capacity values for different temperatures.
+    
+    Returns:
+    - dissociation_temp (float): Temperature at which the heat capacity is maximum (dissociation temperature).
+    - max_CV (float): Maximum value of heat capacity.
+    """
     max_index = np.argmax(C_V_values)
     dissociation_temp = T_values[max_index]
     max_CV = C_V_values[max_index] 

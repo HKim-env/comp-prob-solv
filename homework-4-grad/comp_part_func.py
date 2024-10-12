@@ -23,11 +23,29 @@ L_max = np.cbrt(V)
 
 # Thermal wavelength λ
 def thermal_wavelength(T):
+    """
+    Computes the thermal wavelength (λ) for a given temperature T.
+    
+    Parameters:
+    - T (float): Temperature in Kelvin.
+
+    Returns:
+    - λ (float): Thermal wavelength in meters.
+    """
     return sqrt(h ** 2 / (2 * np.pi * m * k * T)) 
 
 
 # Lennard-Jones potential between two particles at relative distance r
 def lj_potential(r):
+    """
+    Computes the Lennard-Jones potential between two particles separated by distance r.
+    
+    Parameters:
+    - r (float): Distance between two particles in meters.
+
+    Returns:
+    - Potential (float): Lennard-Jones potential energy in Joules.
+    """
     return 4 * epsilon * ((sigma / r) ** 12 - (sigma / r) ** 6)
 
 # 3-1-1 Checking point 1) Write a Python function that numerically computes the classical partition function of two LJ particles in a cubic box using the trapezoidal rule for spatial integration
@@ -35,6 +53,18 @@ def lj_potential(r):
 # I converted the equation as spherical coordinate system.
 
 def partition_function(T):
+    """
+    Computes the classical partition function for two Lennard-Jones (LJ) particles in a cubic box.
+    
+    This function integrates over spherical coordinates for two particles and uses the trapezoidal 
+    rule for numerical integration.
+
+    Parameters:
+    - T (float): Temperature in Kelvin.
+
+    Returns:
+    - Z_total (float): The partition function value for the given temperature.
+    """
     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
     pre_factor = (4 * np.pi) ** 2 / (λ ** 6)  # Pre-factor accounting for spherical integration for both particles // 4 * pi square because there are two particles
 
@@ -56,26 +86,14 @@ def partition_function(T):
 
     return pre_factor * Z_total  # Return the partition function result
 
-
 # Compute partition function for all temperatures
 partition_values = [partition_function(T) for T in T_values]
 
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Specify the folder where the file will be saved, relative to the current directory
-folder_name = "comp-prob-solv/homework-4-grad"
-directory = os.path.join(current_directory, folder_name)
-
-# Create the directory if it does not exist
-try:
-    os.makedirs(directory, exist_ok=True)
-    print(f"Directory created or exists at: {directory}")
-except Exception as e:
-    print(f"Error creating directory: {e}")
-
-# Specify the CSV file path (without duplicating the folder structure)
-csv_file_path = os.path.join(directory, "partition_function_vs_temperature.csv")
+# Specify the CSV file path directly in the current working directory
+csv_file_path = os.path.join(current_directory, "partition_function_vs_temperature.csv")
 
 # Write the results to a CSV file
 try:
@@ -89,7 +107,7 @@ try:
             writer.writerow([T, Z])
     
     print(f"CSV file successfully created at {csv_file_path}")
-except PermissionError:
-    print(f"Permission denied: Unable to write to {csv_file_path}. Check your permissions or if the file is in use.")
+
+# Add exception handling to avoid syntax error
 except Exception as e:
-    print(f"An error occurred while writing the file: {e}")
+    print(f"An error occurred: {e}")
