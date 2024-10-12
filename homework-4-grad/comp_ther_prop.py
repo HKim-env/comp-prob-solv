@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.constants import k, h
-from python_code import internal_energy
 from python_code import partition_function
 from python_code import T_values
 import csv
@@ -10,40 +9,45 @@ import os
 
 # # 3-1-2 Checking point 1) Write Python functions to compute U and CV from the partition function
 # Function to calculate U using np.gradient
-def internal_energy(T):
+
+# Internal energy calculation using np.gradient
+def internal_energy(T_values):
     """
-    Computes the internal energy U(T) using the partition function Z(T).
-    
+    Computes the internal energy U(T) for a range of temperatures using the partition function Z(T).
+
+    The internal energy is calculated as:
+    U(T) = -d(ln(Z))/d(beta), where beta = 1 / (k_B * T)
+
     Parameters:
-    - T (float): Temperature in Kelvin.
+    - T_values (array-like): Array of temperature values in Kelvin.
 
     Returns:
-    - U (float): Internal energy at the given temperature.
+    - U_values (array-like): Array of internal energy values corresponding to each temperature.
     """
-    beta = 1 / (k * T)
-    Z = partition_function(T)  # Assumed that this function doesn't save to a CSV
-    delta_T = T * 0.01  # Small finite difference step for numerical differentiation
-    Z_plus = partition_function(T + delta_T)
-    Z_minus = partition_function(T - delta_T)
-    delta_beta = (1 / (k * (T + delta_T))) - (1 / (k * (T - delta_T)))
-    dlnZ_dBeta = (np.log(Z_plus) - np.log(Z_minus)) / delta_beta
-    U = -(dlnZ_dBeta)
-    return U
+    Z_values = np.array([partition_function(T) for T in T_values])
+    lnZ_values = np.log(Z_values)
+    beta_values = 1 / (k * T_values)
+    dlnZ_dBeta = np.gradient(lnZ_values, beta_values)
+    U_values = -dlnZ_dBeta  # Internal energy U = -d(lnZ)/d(beta)
+    return U_values
 
-# Heat capacity C_V from internal energy U
-def heat_capacity(T):
+# Heat capacity calculation using np.gradient
+def heat_capacity(T_values):
     """
-    Calculates the heat capacity C_V(T) from the internal energy U(T).
-    
+    Computes the heat capacity C_V(T) for a range of temperatures based on internal energy U(T).
+
+    The heat capacity is calculated as:
+    C_V(T) = dU/dT, where U is the internal energy and T is the temperature.
+
     Parameters:
-    - T (float): Temperature in Kelvin.
+    - T_values (array-like): Array of temperature values in Kelvin.
 
     Returns:
-    - C_V_values (array-like): Heat capacity values for each temperature in T_values.
-    - U_values (array-like): Internal energy values for each temperature in T_values.
+    - C_V_values (array-like): Array of heat capacity values corresponding to each temperature.
+    - U_values (array-like): Array of internal energy values corresponding to each temperature.
     """
-    U_values = np.array([internal_energy(T) for T in T_values])
-    C_V_values = np.gradient(U_values, T_values)  # Derivative of U with respect to T
+    U_values = internal_energy(T_values)
+    C_V_values = np.gradient(U_values, T_values)
     return C_V_values, U_values
 
 # Write data to CSV file in the current working directory

@@ -87,10 +87,21 @@ L_max = np.cbrt(V)
 def lj_potential(r):
     return 4 * epsilon * ((sigma / r) ** 12 - (sigma / r) ** 6)
 
-# Partition function for two LJ particles in a cubic box
 def partition_function(T):
+    """
+    Computes the classical partition function for two Lennard-Jones (LJ) particles in a cubic box.
+    
+    This function integrates over spherical coordinates for two particles and uses the trapezoidal 
+    rule for numerical integration.
+
+    Parameters:
+    - T (float): Temperature in Kelvin.
+
+    Returns:
+    - Z_total (float): The partition function value for the given temperature.
+    """
     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
-    pre_factor = (4 * np.pi) ** 2 / (λ ** 6)  # Pre-factor accounting for spherical integration for both particles
+    pre_factor = (4 * np.pi) ** 2 / (λ ** 6)  # Pre-factor accounting for spherical integration for both particles // 4 * pi square because there are two particles
 
     # Set the minimum and maximum relative distances based on the fixed volume
     r_min = 0.001 * sigma  # Avoid zero to prevent singularity
@@ -110,22 +121,44 @@ def partition_function(T):
 
     return pre_factor * Z_total  # Return the partition function result
 
-# Function to calculate U using np.gradient
-def internal_energy(T):
-    beta = 1 / (k * T)
-    Z = partition_function(T)  # Assumed that this function doesn't save to a CSV
-    delta_T = T * 0.01  # Small finite difference step for numerical differentiation
-    Z_plus = partition_function(T + delta_T)
-    Z_minus = partition_function(T - delta_T)
-    delta_beta = (1 / (k * (T + delta_T))) - (1 / (k * (T - delta_T)))
-    dlnZ_dBeta = (np.log(Z_plus) - np.log(Z_minus)) / delta_beta
-    U = -(dlnZ_dBeta)
-    return U
+# Internal energy calculation using np.gradient
+def internal_energy(T_values):
+    """
+    Computes the internal energy U(T) for a range of temperatures using the partition function Z(T).
 
-# Heat capacity C_V from internal energy U
-def heat_capacity(T):
-    U_values = np.array([internal_energy(T) for T in T_values])
-    C_V_values = np.gradient(U_values, T_values)  # Derivative of U with respect to T
+    The internal energy is calculated as:
+    U(T) = -d(ln(Z))/d(beta), where beta = 1 / (k_B * T)
+
+    Parameters:
+    - T_values (array-like): Array of temperature values in Kelvin.
+
+    Returns:
+    - U_values (array-like): Array of internal energy values corresponding to each temperature.
+    """
+    Z_values = np.array([partition_function(T) for T in T_values])
+    lnZ_values = np.log(Z_values)
+    beta_values = 1 / (k * T_values)
+    dlnZ_dBeta = np.gradient(lnZ_values, beta_values)
+    U_values = -dlnZ_dBeta  # Internal energy U = -d(lnZ)/d(beta)
+    return U_values
+
+# Heat capacity calculation using np.gradient
+def heat_capacity(T_values):
+    """
+    Computes the heat capacity C_V(T) for a range of temperatures based on internal energy U(T).
+
+    The heat capacity is calculated as:
+    C_V(T) = dU/dT, where U is the internal energy and T is the temperature.
+
+    Parameters:
+    - T_values (array-like): Array of temperature values in Kelvin.
+
+    Returns:
+    - C_V_values (array-like): Array of heat capacity values corresponding to each temperature.
+    - U_values (array-like): Array of internal energy values corresponding to each temperature.
+    """
+    U_values = internal_energy(T_values)
+    C_V_values = np.gradient(U_values, T_values)
     return C_V_values, U_values
 
 # Calculate the dissociation temperature
