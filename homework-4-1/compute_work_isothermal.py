@@ -34,27 +34,20 @@ import os
 # Initialize empty lists to store the computed work
 work_isothermal = []
 
-# Compute work for each final volume for both processes
+# Compute work for each final volume for the isothermal process
 for V_f in V_f_values:
     w_iso = compute_work_isothermal(V_i, V_f, n, R, T)
     
-    # Append the computed work values to the lists
+    # Append the computed work values to the list
     work_isothermal.append(w_iso)
 
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Specify the folder where the file will be saved, relative to the current directory
-folder_name = "comp-prob-solv/homework-4-1"
-directory = os.path.join(current_directory, folder_name)
+# Specify the CSV file path in the current working directory
+csv_file_path = os.path.join(current_directory, "work_isothermal_vs_volume.csv")
 
-# Create the directory if it does not exist
-os.makedirs(directory, exist_ok=True)
-
-# Specify the CSV file path
-csv_file_path = os.path.join(directory, "work_isothermal_vs_volume.csv")
-
-# Write the results to a CSV file
+# Write the results to a CSV file in the current directory
 with open(csv_file_path, mode='w', newline='') as file:
     writer = csv.writer(file)
     # Write header

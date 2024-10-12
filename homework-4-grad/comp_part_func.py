@@ -56,6 +56,7 @@ def partition_function(T):
 
     return pre_factor * Z_total  # Return the partition function result
 
+
 # Compute partition function for all temperatures
 partition_values = [partition_function(T) for T in T_values]
 
@@ -67,19 +68,28 @@ folder_name = "comp-prob-solv/homework-4-grad"
 directory = os.path.join(current_directory, folder_name)
 
 # Create the directory if it does not exist
-os.makedirs(directory, exist_ok=True)
+try:
+    os.makedirs(directory, exist_ok=True)
+    print(f"Directory created or exists at: {directory}")
+except Exception as e:
+    print(f"Error creating directory: {e}")
 
-# Specify the CSV file path
+# Specify the CSV file path (without duplicating the folder structure)
 csv_file_path = os.path.join(directory, "partition_function_vs_temperature.csv")
 
 # Write the results to a CSV file
-with open(csv_file_path, mode='w', newline='') as file:
-    writer = csv.writer(file)
-    # Write header
-    writer.writerow(['Temperature (K)', 'Partition Function'])
+try:
+    with open(csv_file_path, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        # Write header
+        writer.writerow(['Temperature (K)', 'Partition Function'])
+        
+        # Write data rows
+        for T, Z in zip(T_values, partition_values):
+            writer.writerow([T, Z])
     
-    # Write data rows
-    for T, Z in zip(T_values, partition_values):
-        writer.writerow([T, Z])
-
-print(f"CSV file successfully created at {csv_file_path}")
+    print(f"CSV file successfully created at {csv_file_path}")
+except PermissionError:
+    print(f"Permission denied: Unable to write to {csv_file_path}. Check your permissions or if the file is in use.")
+except Exception as e:
+    print(f"An error occurred while writing the file: {e}")
