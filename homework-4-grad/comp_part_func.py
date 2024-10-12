@@ -32,36 +32,11 @@ def lj_potential(r):
 
 # 3-1-1 Checking point 1) Write a Python function that numerically computes the classical partition function of two LJ particles in a cubic box using the trapezoidal rule for spatial integration
 
-# # Partition function for two LJ particles in a cubic box
-# def partition_function(T):
-#     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
-#     # In the given equation, we can convert the Eq. (10) as spherical coordinate system. Since the system is isotropic, the energy or interaction potential depends only on the radial distance. The polar and azimuthal angle can be simplified as 4 * pi.
-#     # because dV = r^2 * sinϕ * drdϕdθ
-#     # integral range: 0 ~ 2pi for  θ, 0 ~ pi for ϕ
-#     # I applied the 4 * pi to the pre_factor
-#     pre_factor = 4 * np.pi / ((λ ** 6))  # Pre-factor from Eq. (10) includes h and 4*pi
-
-#     # # 3-1-1 Checking point 2) Assume the cubic box has a fixed volume, and the integration should be performed over the relative distances between the particles
-#     # Perform integration over relative distance r, using spherical coordinates
-#     # Set the maximum relative distance based on the fixed volume
-#     r_min = 0.001 * sigma  # Avoid zero to prevent singularity
-#     r_max = L_max
-    
-#     # Discretize the range of relative distances
-#     r_values = np.linspace(r_min, r_max, 1000)
-    
-#     # Compute the Boltzmann factor for each relative distance r
-#     integrand_values = np.array([np.exp(-lj_potential(r) / (k * T)) * r**2 for r in r_values])  # Multiply by r^2 for spherical coords
-    
-#     # Perform the integration using the trapezoidal rule
-#     Z = trapezoid(integrand_values, r_values)
-    
-#     return pre_factor * Z  # Return a single value
-
+# I converted the equation as spherical coordinate system.
 
 def partition_function(T):
     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
-    pre_factor = (4 * np.pi) ** 2 / (λ ** 6)  # Pre-factor accounting for spherical integration for both particles
+    pre_factor = (4 * np.pi) ** 2 / (λ ** 6)  # Pre-factor accounting for spherical integration for both particles // 4 * pi square because there are two particles
 
     # Set the minimum and maximum relative distances based on the fixed volume
     r_min = 0.001 * sigma  # Avoid zero to prevent singularity
@@ -80,31 +55,6 @@ def partition_function(T):
     Z_total = Z_spherical ** 2
 
     return pre_factor * Z_total  # Return the partition function result
-
-
-# # Partition function for two LJ particles in a cubic box
-# def partition_function(T):
-#     λ = thermal_wavelength(T)  # Use thermal wavelength formula with Planck's constant
-
-#     # Apply two spherical volumes by retaining r^2 and handling the integral consistently
-#     pre_factor = (4 * np.pi * V) / (λ ** 6)  # Pre-factor represents both particles in the volume
-
-#     # Perform integration over relative distance r, using spherical coordinates
-#     r_min = 0.001 * sigma  # Avoid zero to prevent singularity
-#     r_max = L_max
-    
-#     # Discretize the range of relative distances
-#     r_values = np.linspace(r_min, r_max, 1000)
-    
-#     # Compute the Boltzmann factor for each relative distance r
-#     integrand_values = np.array([np.exp(-lj_potential(r) / (k * T)) * r**2 for r in r_values])  # Multiply by r^2 for spherical coords
-    
-#     # Perform the integration using the trapezoidal rule
-#     Z = trapezoid(integrand_values, r_values)
-    
-#     return pre_factor * Z  # Return the partition function (unitless)
-
-
 
 # Compute partition function for all temperatures
 partition_values = [partition_function(T) for T in T_values]
