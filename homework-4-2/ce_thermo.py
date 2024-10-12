@@ -153,6 +153,33 @@ for T in T_values:
     S_soc_cfs_values.append(S_soc_cfs)
     Z_soc_cfs_values.append(Z_soc_cfs)
 
+# 2-1-4 Checking point 1) compare the partition functions and the thermodynamic properties (internal energy, free energy, and entropy) for all three cases
+
+# Partition Function:
+
+# Isolated Ce³⁺: The partition function remains constant across the temperature range (~14). This suggests that without SOC or CFS, the system remains relatively insensitive to temperature, implying no significant contribution from internal degrees of freedom or excitation at higher temperatures.
+# Ce³⁺ with SOC: The partition function slightly increases with temperature, indicating that SOC introduces new degrees of freedom or energy levels that become accessible as temperature rises.
+# Ce³⁺ with SOC & CFS: The partition function shows a steady increase with temperature, similar to SOC, but starting from a lower value (~4 at 250 K). This reflects the combined effects of SOC and CFS, which alter the energy level structure and allow more states to be populated at higher temperatures.
+
+# Internal Energy :
+
+# Isolated Ce³⁺: The internal energy remains virtually zero across the temperature range. This is consistent with the constant partition function, as no thermal excitations are available in this simplified model.
+# Ce³⁺ with SOC: The internal energy increases smoothly with temperature, showing that SOC introduces energy levels that contribute to thermal energy.
+# Ce³⁺ with SOC & CFS: The internal energy grows even faster compared to SOC alone, indicating that the inclusion of CFS introduces additional energy levels, making the system more thermally active as temperature rises.
+
+# Free Energy :
+
+# Isolated Ce³⁺: The free energy decreases linearly with temperature, reflecting the simple thermal behavior of the system with no internal degrees of freedom.
+# Ce³⁺ with SOC: The free energy is less negative compared to the isolated case, as the system has additional energy levels due to SOC, which reduce the available free energy.
+# Ce³⁺ with SOC & CFS: The free energy is higher (less negative) than both the isolated and SOC cases. This shows that the combination of SOC and CFS results in higher internal energy, thus reducing the free energy further.
+
+# Entropy :
+
+# Isolated Ce³⁺: Entropy remains constant across the temperature range, which is expected as there are no internal degrees of freedom contributing to the disorder or thermal distribution.
+# Ce³⁺ with SOC: The entropy increases with temperature, indicating that SOC introduces thermal excitations and more accessible states, leading to increased disorder.
+# Ce³⁺ with SOC & CFS: The entropy increases even more rapidly than the SOC-only case. The combined effects of SOC and CFS create more accessible states, contributing to higher entropy as temperature rises.
+
+
 # 2-1-4 Checking point 2) Provide plots of the thermodynamic properties as a function of temperature (from 300 K to 2000 K)
 # Plot Partition Functions for the three cases
 plt.figure(figsize=(10, 6))
