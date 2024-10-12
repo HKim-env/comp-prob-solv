@@ -22,6 +22,16 @@ def numerical_derivative(func, T, delta=1e-5):
 # 2-1-1 Checking point 1) Write a Python function to compute the partition function for an isolated Ce3+ ion with 14-fold degeneracy, where all states have zero energy.
 # Isolated Ce3+ with 14-fold degeneracy, zero energy for all states
 def partition_function_isolated(T):
+    """
+    Computes the partition function for an isolated Ce3+ ion with 14-fold degeneracy,
+    where all states have zero energy.
+
+    Parameters:
+    - T: Temperature (not actually used since the partition function is constant)
+
+    Returns:
+    - Z_iso: Partition function (constant value of 14)
+    """
     g_iso = 14  # Degeneracy (constant partition function)
     Z_iso = g_iso  # Partition function is constant
     return Z_iso
@@ -29,6 +39,19 @@ def partition_function_isolated(T):
 # 2-1-1 Checking point 2) Compute the thermodynamic properties 
 # Thermodynamic properties based on the given expressions
 def thermodynamic_properties_isolated(T):
+    """
+    Computes the thermodynamic properties (internal energy, free energy, entropy)
+    for an isolated Ce3+ ion at a given temperature.
+
+    Parameters:
+    - T: Temperature in Kelvin
+
+    Returns:
+    - U: Internal energy (J)
+    - F: Free energy (J)
+    - S: Entropy (J/K)
+    - Z: Partition function
+    """
     Z = partition_function_isolated(T)
     
     # Internal Energy: U = - d(ln Z) / d(beta), where beta = 1 / (k_B T)
@@ -53,6 +76,18 @@ def thermodynamic_properties_isolated(T):
 # 2-1-2 Checking point 1) Write a Python function to compute the partition function for Ce3+ with SOC
 # Ce3+ with SOC: Two levels with degeneracies 6 and 8, separated by 0.28 eV
 def partition_function_soc(T):
+    """
+    Computes the partition function for Ce3+ with SOC (Spin-Orbit Coupling),
+    where the ion has two levels with degeneracies 6 and 8, separated by 0.28 eV.
+
+    Parameters:
+    - T: Temperature in Kelvin
+
+    Returns:
+    - Z_soc: Partition function
+    - g_soc: Array of degeneracies
+    - E_soc: Array of energy levels in Joules
+    """
     g_soc = np.array([6, 8])  # Degeneracies
     E_soc = np.array([0, 0.28 * 1.60218e-19])  # Energy levels in Joules (0.28 eV to J)
     beta = 1 / (k * T)
@@ -61,6 +96,19 @@ def partition_function_soc(T):
 
 # 2-1-2 Checking point 2) Use the partition function to compute the thermodynamic properties 
 def thermodynamic_properties_soc(T):
+    """
+    Computes the thermodynamic properties (internal energy, free energy, entropy)
+    for Ce3+ with Spin-Orbit Coupling at a given temperature.
+
+    Parameters:
+    - T: Temperature in Kelvin
+
+    Returns:
+    - U: Internal energy (J)
+    - F: Free energy (J)
+    - S: Entropy (J/K)
+    - Z: Partition function
+    """
     Z, g_soc, E_soc = partition_function_soc(T)  # Ensure g_soc and E_soc are retrieved
     
     # Internal Energy: U = - d(ln Z) / d(beta)
@@ -79,6 +127,19 @@ def thermodynamic_properties_soc(T):
 # 2-1-3 Checking point 2) Write a Python function to compute the partition function for Ce3+ with SOC and CFS
 # Ce3+ with SOC and CFS: Five distinct levels with different degeneracies
 def partition_function_soc_cfs(T):
+    """
+    Computes the partition function for Ce3+ with Spin-Orbit Coupling (SOC) 
+    and Crystal Field Splitting (CFS), where there are five distinct energy levels
+    with varying degeneracies.
+
+    Parameters:
+    - T: Temperature in Kelvin
+
+    Returns:
+    - Z_soc_cfs: Partition function
+    - g_soc_cfs: Array of degeneracies
+    - E_soc_cfs: Array of energy levels in Joules
+    """
     g_soc_cfs = np.array([4, 2, 2, 4, 2])  # Degeneracies
     E_soc_cfs = np.array([0, 0.12, 0.25, 0.32, 0.46]) * 1.60218e-19  # 2-1-3 Checking point 1) Split into five individual energy levels
     beta = 1 / (k * T)
@@ -87,6 +148,19 @@ def partition_function_soc_cfs(T):
 
 # 2-1-3 Checking point 3) Use the partition function to compute the thermodynamic properties 
 def thermodynamic_properties_soc_cfs(T):
+    """
+    Computes the thermodynamic properties (internal energy, free energy, entropy)
+    for Ce3+ with Spin-Orbit Coupling and Crystal Field Splitting at a given temperature.
+
+    Parameters:
+    - T: Temperature in Kelvin
+
+    Returns:
+    - U: Internal energy (J)
+    - F: Free energy (J)
+    - S: Entropy (J/K)
+    - Z: Partition function
+    """
     Z, g_soc_cfs, E_soc_cfs = partition_function_soc_cfs(T)  # Ensure g_soc_cfs and E_soc_cfs are retrieved
     
     # Internal Energy: U = - d(ln Z) / d(beta)
