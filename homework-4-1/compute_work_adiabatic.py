@@ -5,6 +5,26 @@ from scipy.integrate import trapezoid
 # 1-1-2 Checking point 2) Compute the constant from the initial conditions and perform numerical integration to find the work
 
 def compute_work_adiabatic(V_i, V_f, P_i, gamma, num_points=1000):
+    """
+    Computes the work done during an adiabatic process for an ideal gas.
+    
+    Parameters:
+    V_i (float): Initial volume in cubic meters.
+    V_f (float): Final volume in cubic meters.
+    P_i (float): Initial pressure in Pascals.
+    gamma (float): Adiabatic index (ratio of specific heats, Cp/Cv).
+    num_points (int): Number of points to use for numerical integration (default is 1000).
+    
+    Returns:
+    float: The work done during the adiabatic process in Joules.
+    
+    Explanation:
+    The function computes the work done during an adiabatic process based on the relation:
+        W = ∫ P dV, where P = C / V^gamma and C is a constant determined by the initial conditions.
+    
+    The work is computed using the trapezoidal rule for numerical integration over the specified 
+    volume range (V_i to V_f). The pressure at each volume is determined using the adiabatic relation.
+    """
     # Define the volume array for integration
     V = np.linspace(V_i, V_f, num_points)
     

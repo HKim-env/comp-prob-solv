@@ -233,17 +233,10 @@ plt.show()
 # Get the current working directory
 current_directory = os.getcwd()
 
-# Specify the folder where the file will be saved, relative to the current directory
-folder_name = "comp-prob-solv/homework-4-2"
-directory = os.path.join(current_directory, folder_name)
-
-# Create the directory if it does not exist
-os.makedirs(directory, exist_ok=True)
-
-# Write the results to CSV files for each case
+# Write the results to CSV files for each case directly in the current working directory
 
 # Isolated Ce3+
-csv_file_path_isolated = os.path.join(directory, "thermo_isolated.csv")
+csv_file_path_isolated = os.path.join(current_directory, "thermo_isolated.csv")
 with open(csv_file_path_isolated, mode='w', newline='') as file:
     writer = csv.writer(file)
     # Write header
@@ -252,17 +245,17 @@ with open(csv_file_path_isolated, mode='w', newline='') as file:
     writer.writerows(data_isolated)
 
 # Ce3+ with SOC
-csv_file_path_soc = os.path.join(directory, "thermo_soc.csv")
+csv_file_path_soc = os.path.join(current_directory, "thermo_soc.csv")
 with open(csv_file_path_soc, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Temperature (K)', 'Internal Energy (J)', 'Free Energy (J)', 'Entropy (J/K)'])
     writer.writerows(data_soc)
 
 # Ce3+ with SOC and CFS
-csv_file_path_soc_cfs = os.path.join(directory, "thermo_soc_cfs.csv")
+csv_file_path_soc_cfs = os.path.join(current_directory, "thermo_soc_cfs.csv")
 with open(csv_file_path_soc_cfs, mode='w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(['Temperature (K)', 'Internal Energy (J)', 'Free Energy (J)', 'Entropy (J/K)'])
     writer.writerows(data_soc_cfs)
 
-print(f"CSV files successfully created in {directory}")
+print(f"CSV files successfully created in {current_directory}")

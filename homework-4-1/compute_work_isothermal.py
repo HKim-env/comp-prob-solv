@@ -5,6 +5,27 @@ from scipy.integrate import trapezoid
 # 1-1-1 Checking point 2) Use scipy.integrate.trapezoid to compute the work. The pressure in this case is given by the ideal gas law
 
 def compute_work_isothermal(V_i, V_f, n, R, T, num_points=1000):
+    """
+    Computes the work done during an isothermal process for an ideal gas.
+    
+    Parameters:
+    V_i (float): Initial volume in cubic meters.
+    V_f (float): Final volume in cubic meters.
+    n (float): Amount of substance in moles (mol).
+    R (float): Ideal gas constant in J/mol-K.
+    T (float): Temperature in Kelvin (constant for isothermal process).
+    num_points (int): Number of points to use for numerical integration (default is 1000).
+    
+    Returns:
+    float: The work done during the isothermal process in Joules.
+    
+    Explanation:
+    The function computes the work done during an isothermal process based on the relation:
+        W = - ∫ P dV, where P = nRT / V (ideal gas law for isothermal process).
+    
+    The work is computed using the trapezoidal rule for numerical integration over the specified 
+    volume range (V_i to V_f). The pressure at each volume is determined using the ideal gas law.
+    """
     # Define the volume array for integration
     V = np.linspace(V_i, V_f, num_points)
     
